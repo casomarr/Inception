@@ -49,5 +49,3 @@ EXPOSE 9000
 # run CLI script
 CMD [ "./cli_config.sh"]
 
-#//HERE :  "C’est la page qui demande de choisir un titre"
-
