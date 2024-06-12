@@ -1,3 +1,5 @@
+#!/bin/bash
+
 #script that creates a database and an associated user
 #(see script.md's explanations)
 

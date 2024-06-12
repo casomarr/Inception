@@ -1,3 +1,5 @@
+#!/bin/bash
+
 sleep 10 #to ensure MariaDB's database has had the time to finish launching
 
 # To automatically enter the information in the first WordPress welcome page :
@@ -12,3 +14,6 @@ wp config create	--allow-root \
 wp core install --url=$WP_URL --title=$WP_TITLE --admin_user=$ADMIN_USER --admin_password=$ADMIN_PASSWORD --admin_email=$ADMIN_EMAIL --path=/var/www/html --allow-root
 # Add user
 wp user create $USER $USER_EMAIL --role=author --user_pass=$USER_PASSWORD --path=/var/www/html --allow-root
+
+#creates /run/php if it doesn't already exist to avoid PHP error
+exec /usr/sbin/php-fpm7.4 -
