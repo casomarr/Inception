@@ -1,34 +1,74 @@
-#put the docker-network info directly inside this file to be respect the subject's structure example
+#no tabulations accepted in .yml file : only spaces
 
-#je pense qu'ici iront les commandes type :
-# sudo docker build -t nginx_img srcs/requirements/NGINX
-# sudo docker run -d -p 443:443 nginx_img
-# OR
-# sudo docker run -it nginx
+version: ‘3’
 
-# sudo docker build -t mariadb_img srcs/requirements/MariaDB
-# sudo docker run -d -p 3306:3306  mariadb_img
-# OR
-# sudo docker run -it mariadb
+services:
 
-# sudo docker build -t wordpress_img srcs/requirements/WordPress
+  mariadb:
+    image: mariadb_img
+    container_name: mariadb_container
+    networks:
+    - inception
+    build: 
+      context: requirements/MariaDB   # path to the Dockerfile
+    # dockerfile: Dockerfile
+    env_file: .env
+    volumes:                      # volumes : data stored locally in case WordPress crashes or the computer shuts down
+    - mariadb:/var/lib/mysql
+    restart: unless-stopped       # relaunch while not stopped
+    expose:                       # "expose" : to expose ports from a container to other containers within the same Docker network
+    - "3306"
+
+  nginx:
+    image: nginx_img
+    container_name: nginx_container
+    volumes:
+    - wordpress:/var/www/wordpress
+    networks:
+    - inception
+    depends_on:                     # tells not to start NGINX while WordPress has not started
+    - wordpress
+    build: 
+      context: requirements/NGINX
+    # dockerfile: Dockerfile
+    env_file: .env
+    ports:
+    - "443:443"                   # "ports" instead of "expose" : to expose a port from the container to the host system or to other containers
+    restart: on-failure           # the container will relaunch only if it crashes
+
+  wordpress:
+    image: wordpress_img
+    container_name: wordpress_container
+    env_file: .env
+    volumes:
+    - wordpress:/var/www/wordpress
+    networks:
+    - inception
+    build: 
+      context: requirements/WordPress
+    # dockerfile: Dockerfile
+    depends_on:                     # tells not to start WordPress while MariaDB has not started (or it won't be able to configure the database)
+    - mariadb
+    restart: on-failure
+    expose: 
+    - "9000"
 
 
+volumes:                          # the volumes will be accessible in /home/login/data of the host machine using Docker
+  wordpress:
+    driver: local                 # tells to store the volume locally
+    driver_opts:
+      type: 'none'                   # no specific type
+      o: 'bind'
+      device: '/home/casomarr/data/wordpress'     # path where it will be stored locally
+  mariadb:
+    driver: local
+    driver_opts:
+      type: 'none' 
+      o: 'bind'                     # Bind Mounts : volumes that can be mounted on a access path to host and can be modified by other processes outside of Docker.
+      device: '/home/casomarr/data/mariadb'
 
 
-# version: ‘3’
-
-# services:
-# 	mariadb:
-# 	container_name: mariadb			# Le nom du container, oui vraiment.
-# 	networks:
-# 	- inception            			# à quel network il appartient
-# 	build: 
-# 	context: requirements/MariaDB 	# ou se trouve son Dockerfile
-# 	dockerfile: Dockerfile			# le nom du Dockerfile ?!
-# 	env_file: .env                  # le fichier d'environnement pour transmettre les variables
-# 	volumes:                        # Voir plus bas
-# 	- mariadb:/var/lib/mysql
-# 	restart: unless-stopped         # redémarre tant qu'il n'est pas stoppé 
-# 	expose:                         # le port à exposer
-# 	- "3306"
+networks:
+  inception:
+    driver: bridge              # installs automatically the rules that will allow the 3 containers to communicate by bridge
