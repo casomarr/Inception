@@ -19,5 +19,10 @@
 # Pour supprimer le build :    docker-compose -f  <path_docker_compose>  down -v
 
 
-# ---> HERE <---: en train de fix les pb qd je run cette commande :
+
 sudo docker compose -f ./srcs/docker-compose.yml up -d --build
+
+sudo docker compose -f ./srcs/docker-compose.yml stop
+
+# pour débeuguer :
+docker compose logs wordpress_container
