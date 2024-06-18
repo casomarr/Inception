@@ -4,21 +4,32 @@
 #(see script.md's explanations)
 
 #launch MySQL
-service mysql start;
+# service mysql start;
 
-#configuration :
+if [-f /var/lib/mysql/$SQL_DATABASE]; then
+    echo "SQL database already exists"
 
-mysql -e "CREATE DATABASE IF NOT EXISTS \`${SQL_DATABASE}\`;"
+else
 
-mysql -e "CREATE USER IF NOT EXISTS \`${SQL_USER}\`@'localhost' IDENTIFIED BY '${SQL_PASSWORD}';"
+    service mariadb start
 
-mysql -e "GRANT ALL PRIVILEGES ON \`${SQL_DATABASE}\`.* TO \`${SQL_USER}\`@'%' IDENTIFIED BY '${SQL_PASSWORD}';"
+    #configuration :
 
-mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${SQL_ROOT_PASSWORD}';"
+    echo "CREATE DATABASE IF NOT EXISTS \`${SQL_DATABASE}\`;" | mariadb -u root
 
-#refresh
-mysql -e "FLUSH PRIVILEGES;"
+    echo "CREATE USER IF NOT EXISTS \`${SQL_USER}\`@'localhost' IDENTIFIED BY '${SQL_PASSWORD}';" | mariadb -u root
 
-#re-launch
-mysqladmin -u root -p$SQL_ROOT_PASSWORD shutdown
+    echo "GRANT ALL PRIVILEGES ON \`${SQL_DATABASE}\`.* TO \`${SQL_USER}\`@'%' IDENTIFIED BY '${SQL_PASSWORD}';" | mariadb -u root
+
+    echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '${SQL_ROOT_PASSWORD}';" | mariadb -u root
+
+    #refresh
+    echo "FLUSH PRIVILEGES;" | mariadb -u root -p$SQL_ROOT_PASSWORD
+
+fi
+# #re-launch
+# mysqladmin -u root -p$SQL_ROOT_PASSWORD shutdown
+
+sleep 5
+
 exec mysqld_safe

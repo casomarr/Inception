@@ -35,3 +35,13 @@ Re-launch MySQL :
 `mysqladmin -u root -p$SQL_ROOT_PASSWORD shutdown` --> shuts MySQL down
 `exec mysqld_safe`--> launches MySQL
 
+
+
+
+
+#SCRIPT COMMENTS
+[mysqld] #indicates for which category are the following configurations 
+port = 3306 #VERIFIER : JE NE VOIS PAS QUE 3306 SOIT PRÉCISÉ DANS LE SUJET
+bind_address=* #indicates that aññ IP can connect
+datadir=/var/lib/mysql #indicates which folder will store our database
+user=mysql

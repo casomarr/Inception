@@ -1,4 +1,4 @@
-FROM debian:buster
+FROM debian:bullseye
 
 RUN apt update && apt upgrade -y
 RUN apt install nginx -y
@@ -16,3 +16,5 @@ RUN chown -R www-data:www-data /var/www/html
 EXPOSE 443
 
 CMD [ "nginx", "-g", "daemon off;" ]
+#to run in background
+#HERE : je pense que cette ligne pose pb

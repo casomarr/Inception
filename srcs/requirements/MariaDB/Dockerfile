@@ -1,16 +1,14 @@
-FROM debian:buster
+FROM    debian:bullseye
 
-RUN apt update && apt upgrade -y
-RUN apt-get install mariadb-server -y
+RUN     apt update && apt upgrade -y
+RUN     apt-get install mariadb-server -y
 
-# COPY conf/mariaDB.conf	/etc/mysql/mariadb.conf.d/mariaDB.conf
-# COPY conf/mariaDB.conf	/etc/mysql/mariadb.conf.d/50-server.cnf
-COPY conf/mariaDB.conf	/etc/mysql/mariadb.conf.d/
-# COPY conf/mariaDB.conf	.
+# COPY  conf/mariaDB.conf	    /etc/mysql/mariadb.conf.d/50-server.cnf
+COPY  conf/50-server.cnf	    /etc/mysql/mariadb.conf.d/50-server.cnf
 
-COPY ./conf/mariaDB.sh .
-RUN chmod +x mariaDB.sh
+COPY    ./conf/mariaDB.sh       .
+RUN     chmod +x mariaDB.sh
 
-EXPOSE 3306
+EXPOSE  3306
 
-CMD ["./mariaDB.sh"]
+CMD     ["./mariaDB.sh"]

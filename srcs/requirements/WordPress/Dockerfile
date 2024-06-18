@@ -1,6 +1,6 @@
 # WordPress dockerfile
 
-FROM debian:buster
+FROM debian:bullseye
 
 RUN apt update && apt upgrade -y
 RUN apt install nginx -y

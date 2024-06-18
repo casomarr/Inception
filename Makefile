@@ -26,3 +26,5 @@ sudo docker compose -f ./srcs/docker-compose.yml stop
 
 # pour débeuguer :
 docker compose logs wordpress_container
+#pour tout supprimer de temps en temps
+docker system prune -af
