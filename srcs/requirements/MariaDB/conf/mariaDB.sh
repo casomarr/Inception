@@ -6,7 +6,7 @@
 #launch MySQL
 # service mysql start;
 
-if [-f /var/lib/mysql/$SQL_DATABASE]; then
+if [ -f /var/lib/mysql/$SQL_DATABASE ]; then
     echo "SQL database already exists"
 
 else
@@ -25,6 +25,8 @@ else
 
     #refresh
     echo "FLUSH PRIVILEGES;" | mariadb -u root -p$SQL_ROOT_PASSWORD
+
+    #RAJOUTER LE KILL??
 
 fi
 # #re-launch
