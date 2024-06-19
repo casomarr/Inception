@@ -11,26 +11,28 @@ RUN apt install nginx -y
 RUN apt-get -y install wget
 
 # download PHP and its dependencies
-RUN apt-get install -y php7.3\
+RUN apt-get install -y php7.4\
 						php-fpm\
 						php-mysql\
 						mariadb-client
                         #TODO : vérifier mariadb-client
 
 # download WordPress
-RUN wget https://fr.wordpress.org/wordpress-6.0-fr_FR.tar.gz -P /var/www
+RUN wget https://fr.wordpress.org/wordpress-6.4-fr_FR.tar.gz -P /var/www
 
 # we delete the .tar file
-RUN cd /var/www && tar -xzf wordpress-6.0-fr_FR.tar.gz && rm wordpress-6.0-fr_FR.tar.gz
+RUN cd /var/www && tar -xzf wordpress-6.4-fr_FR.tar.gz && rm wordpress-6.4-fr_FR.tar.gz
 
 # We allow the root user to write in the wordpress folder
-RUN	chown -R root:root /var/www/wordpress
+RUN cp -r /var/www/wordpress/. /var/www/html
+RUN rm -rf /var/www/wordpress
+RUN	chown -R root:root /var/www/html
 
 ## PHP Configuration
 
 # COPY ./conf/wordpress.conf  /etc/php/7.4/fpm/pool.d/wordpress.conf
 # COPY ./conf/wordpress.conf  /etc/php/7.4/fpm/pool.d/www.conf
-COPY ./conf/wordpress.conf  /etc/php/7.4/fpm/pool.d/
+COPY ./conf/www.conf  /etc/php/7.4/fpm/pool.d/www.conf
 # COPY ./conf/wordpress.conf .
 
 ## WordPress Configuration
@@ -40,11 +42,13 @@ RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.ph
 
 # move to correct folder and give rights
 RUN chmod +x wp-cli.phar
-RUN mv wp-cli.phar /usr/local/bin/wp
+#RUN mv wp-cli.phar /usr/local/bin/wp
 
 # move CLI script to container folder and give rights
 COPY ./conf/cli_config.sh .
 RUN chmod +x cli_config.sh
+
+RUN mkdir -p /run/php
 
 # set container's port
 EXPOSE 9000

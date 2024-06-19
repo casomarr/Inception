@@ -20,11 +20,33 @@
 
 
 
-sudo docker compose -f ./srcs/docker-compose.yml up -d --build
+# sudo docker compose -f ./srcs/docker-compose.yml up -d --build
 
-sudo docker compose -f ./srcs/docker-compose.yml stop
+# sudo docker compose -f ./srcs/docker-compose.yml stop
 
 # pour débeuguer :
-docker compose logs wordpress_container
+#docker compose logs wordpress_container
 #pour tout supprimer de temps en temps
-sudo docker system prune -af
+# sudo docker system prune -af
+
+
+all:
+# docker compose
+	sudo docker compose -f ./srcs/docker-compose.yml up -d --build
+
+clean:
+#docker stop
+	sudo docker compose -f ./srcs/docker-compose.yml stop
+#docker prune
+	sudo docker system prune -af
+
+re: clean all
+
+logs mariadb:
+	sudo docker logs mariadb_container
+
+logs nginx:
+	sudo docker logs nginx_container
+
+logs wordpress:
+	sudo docker logs wordpress_container

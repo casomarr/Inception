@@ -6,14 +6,18 @@
 #launch MySQL
 # service mysql start;
 
-if [ -f /var/lib/mysql/$SQL_DATABASE ]; then
+echo "banane"
+if [ -d /var/lib/mysql/$SQL_DATABASE ]; then
     echo "SQL database already exists"
 
 else
 
+    echo "Je lance mariadb"
     service mariadb start
 
     #configuration :
+
+    echo "Je configure"
 
     echo "CREATE DATABASE IF NOT EXISTS \`${SQL_DATABASE}\`;" | mariadb -u root
 
@@ -33,5 +37,7 @@ fi
 # mysqladmin -u root -p$SQL_ROOT_PASSWORD shutdown
 
 sleep 5
+
+echo "Je relance mariadb"
 
 exec mysqld_safe
