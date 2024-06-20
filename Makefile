@@ -42,11 +42,11 @@ clean:
 
 re: clean all
 
-logs mariadb:
+logs m:
 	sudo docker logs mariadb_container
 
-logs nginx:
+logs n:
 	sudo docker logs nginx_container
 
-logs wordpress:
+logs w:
 	sudo docker logs wordpress_container
