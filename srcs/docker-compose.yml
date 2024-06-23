@@ -23,7 +23,7 @@ services:
     image: nginx_img
     container_name: nginx_container
     volumes:
-    - wordpress:/var/www/wordpress
+    - wordpress:/var/www/html
     networks:
     - inception
     depends_on:                     # tells not to start NGINX while WordPress has not started
@@ -40,8 +40,12 @@ services:
     image: wordpress_img
     container_name: wordpress_container
     env_file: .env
+#502 bad gateway
     volumes:
-    - wordpress:/var/www/wordpress
+    - wordpress:/var/www/html
+#403 forbidden
+    # volumes:
+    # - wordpress:/var/www/wordpress
     networks:
     - inception
     build: 

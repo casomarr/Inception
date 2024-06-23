@@ -39,6 +39,9 @@ clean:
 	sudo docker compose -f ./srcs/docker-compose.yml stop
 #docker prune
 	sudo docker system prune -af
+#A effacer
+	sudo rm -rf ~/data/wordpress ~/data/mariadb
+	mkdir ~/data/wordpress ~/data/mariadb
 
 re: clean all
 
@@ -50,3 +53,5 @@ logs n:
 
 logs w:
 	sudo docker logs wordpress_container
+
+#https://casomarr.42.fr
