@@ -6,7 +6,6 @@
 #launch MySQL
 # service mysql start;
 
-echo "banane"
 if [ -d /var/lib/mysql/$SQL_DATABASE ]; then
     echo "SQL database already exists"
 

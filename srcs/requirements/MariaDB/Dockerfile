@@ -13,4 +13,3 @@ RUN     chmod +x mariaDB.sh
 EXPOSE  3306
 
 CMD     ["./mariaDB.sh"]
-#CMD [""]
