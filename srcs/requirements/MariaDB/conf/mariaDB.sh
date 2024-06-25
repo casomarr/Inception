@@ -11,12 +11,13 @@ if [ -d /var/lib/mysql/$SQL_DATABASE ]; then
 
 else
 
-    echo "Je lance mariadb"
+    echo "Launching mariadb"
+    
     service mariadb start
 
     #configuration :
 
-    echo "Je configure"
+    echo "Configurating mariadb"
 
     echo "CREATE DATABASE IF NOT EXISTS \`${SQL_DATABASE}\`;" | mariadb -u root
 
@@ -37,6 +38,6 @@ fi
 
 sleep 5
 
-echo "Je relance mariadb"
+echo "Relaunching mariadb"
 
 exec mysqld_safe

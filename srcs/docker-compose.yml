@@ -40,12 +40,8 @@ services:
     image: wordpress_img
     container_name: wordpress_container
     env_file: .env
-#502 bad gateway
     volumes:
     - wordpress:/var/www/html
-#403 forbidden
-    # volumes:
-    # - wordpress:/var/www/wordpress
     networks:
     - inception
     build: 
