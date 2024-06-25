@@ -122,74 +122,91 @@ SRCS = 	srcs/requirements/MariaDB/conf/50-server.cnf \
 all: ${SRCS} create_volumes_folders add_env_variables
 # docker compose
 		@echo "Building the containers."
-		sudo docker compose -f ./srcs/docker-compose.yml up -d --build
+		docker compose -f ./srcs/docker-compose.yml up -d --build
 
 create_volumes_folders :
 		@echo "Creating the volumes' folders."
 		@if [ ! -d /home/casomarr/data/ ]; \
 		then \
-			sudo mkdir /home/casomarr/data; \
+			mkdir /home/casomarr/data; \
 		fi ; \
 		if [ ! -d /home/casomarr/data/wordpress ]; \
 		then \
-			sudo mkdir /home/casomarr/data/wordpress; \
+			mkdir /home/casomarr/data/wordpress; \
 		fi ; \
 		if [ ! -d /home/casomarr/data/mariadb ]; \
 		then \
-			sudo mkdir /home/casomarr/data/mariadb; \
+			mkdir /home/casomarr/data/mariadb; \
 		fi ;
 
 add_env_variables :
 		@echo "Adding the .env file."
 		@if [ ! -e srcs/.env ]; \
 		then \
-			sudo cp /home/casomarr/.env srcs/; \
+			cp /home/casomarr/.env srcs/; \
 		fi;
 
 remove_env_variables :
 		@echo "Removing the .env file."
 		@if [ -e srcs/.env ]; \
 		then \
-			sudo rm -f srcs/.env; \
+			rm -f srcs/.env; \
 		fi;
 
+#to fix : enlever les sudo!!
 remove_volumes_folders :
 		@echo "Removing the volumes' folders."
-		sudo rm -rf /home/casomarr/data/wordpress
-		sudo rm -rf /home/casomarr/data/mariadb
-		sudo rm -rf /home/casomarr/data
+		@if [ -d /home/casomarr/data/wordpress ]; \
+		then \
+			sudo rm -rf /home/casomarr/data/wordpress; \
+		fi; \
+		if [ -d /home/casomarr/data/mariadb ]; \
+		then \
+			sudo rm -rf /home/casomarr/data/mariadb; \
+		fi; \
+		if [ -d /home/casomarr/data ]; \
+		then \
+			sudo rm -rf /home/casomarr/data; \
+		fi;
 
-clean:
-		@echo "Stoping and removing the containers."
+
+# rm -rf /home/casomarr/data/wordpress
+# rm -rf /home/casomarr/data/mariadb
+# rm -rf /home/casomarr/data
+
 #removes containers
-		sudo docker compose -f ./srcs/docker-compose.yml down
-#removes images (sudo docker image ls)
-		sudo docker system prune -af
-#removes volumes (sudo docker volume ls)
-		@if [ "sudo docker volume ls -f name=srcs_mariadb" ]; \
+down : $(SRCS) add_env_variables
+			docker compose -f ./srcs/docker-compose.yml down
+# make re to fix here
+clean: down
+		@echo "Stopping and removing the containers."
+		
+#removes images (docker image ls)
+		docker system prune -af
+#removes volumes (docker volume ls)
+		@if [ "docker volume ls -f name=srcs_mariadb" ]; \
 		then \
-			sudo docker volume rm -f srcs_mariadb; \
+			docker volume rm -f srcs_mariadb; \
 		fi ; \
-		if [ "sudo docker volume ls -f name=srcs_wordpress" ]; \
+		if [ "docker volume ls -f name=srcs_wordpress" ]; \
 		then \
-			sudo docker volume rm -f wordpress; \
+			docker volume rm -f wordpress; \
 		fi ;
 #IMPORTANT: pourquoi les volumes portent le nom type srcs_wordpress? pourquoi srcs devant?
-#IMPORTANT: besoin d'eviter de mettre sudo partout cf 42evals!!
 
 fclean: clean remove_env_variables remove_volumes_folders
 
 re: 	fclean all
 
 logs_m:
-		sudo docker logs mariadb_container
+		docker logs mariadb_container
 
 #IMPORTANT: logs_n ne marche pas???
 logs_n:
-		sudo docker logs nginx_container
+		docker logs nginx_container
 
 logs_w:
-		sudo docker logs wordpress_container
+		docker logs wordpress_container
 
 .PHONY:	all re clean create_volumes_folders add_env_variables remove_env_variables logs_m logs_n logs_w
 
@@ -200,9 +217,9 @@ logs_w:
 #https://casomarr.42.fr/wp-admin
 
 # To build a docker separetly (without docker-compose.yml) :
-# sudo docker build -t nginx_img srcs/requirements/NGINX
-# sudo docker run -d -p 443:443 nginx_img
+# docker build -t nginx_img srcs/requirements/NGINX
+# docker run -d -p 443:443 nginx_img
 # OR
-# sudo docker run -it nginx
-# sudo docker down nginx_img
+# docker run -it nginx
+# docker down nginx_img
 
