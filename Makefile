@@ -211,10 +211,6 @@ logs_w:
 .PHONY:	all re clean create_volumes_folders add_env_variables remove_env_variables logs_m logs_n logs_w
 
 
-#to connect with regular user:
-#https://casomarr.42.fr
-#to connect with admin user:
-#https://casomarr.42.fr/wp-admin
 
 # To build a docker separetly (without docker-compose.yml) :
 # docker build -t nginx_img srcs/requirements/NGINX
@@ -222,3 +218,10 @@ logs_w:
 # OR
 # docker run -it nginx
 # docker down nginx_img
+
+
+#to connect with regular user:
+#https://casomarr.42.fr
+#to connect with admin user:
+#https://casomarr.42.fr/wp-admin
+
