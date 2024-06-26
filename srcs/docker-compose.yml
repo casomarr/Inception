@@ -1,6 +1,4 @@
-#no tabulations accepted in .yml file : only spaces
-
-# version: ‘3’
+# No tabulations accepted in .yml file : only spaces
 
 services:
 
@@ -10,13 +8,12 @@ services:
     networks:
     - inception
     build: 
-      context: requirements/MariaDB   # path to the Dockerfile
-    # dockerfile: Dockerfile
+      context: requirements/MariaDB  # path to the Dockerfile
     env_file: .env
-    volumes:                      # volumes : data stored locally in case WordPress crashes or the computer shuts down
+    volumes:                         # volumes : data stored locally in case WordPress crashes or the computer shuts down
     - mariadb:/var/lib/mysql
-    restart: unless-stopped       # relaunch while not stopped
-    expose:                       # "expose" : to expose ports from a container to other containers within the same Docker network
+    restart: unless-stopped          # relaunch while not stopped
+    expose:                          # "expose" : to expose ports from a container to other containers within the same Docker network
     - "3306"
 
   nginx:
@@ -30,11 +27,10 @@ services:
     - wordpress
     build: 
       context: requirements/NGINX
-    # dockerfile: Dockerfile
     env_file: .env
     ports:
-    - "443:443"                   # "ports" instead of "expose" : to expose a port from the container to the host system or to other containers
-    restart: on-failure           # the container will relaunch only if it crashes
+    - "443:443"                     # "ports" instead of "expose" : to expose a port from the container to the host system or to other containers
+    restart: on-failure             # the container will relaunch only if it crashes
 
   wordpress:
     image: wordpress_img
@@ -46,7 +42,6 @@ services:
     - inception
     build: 
       context: requirements/WordPress
-    # dockerfile: Dockerfile
     depends_on:                     # tells not to start WordPress while MariaDB has not started (or it won't be able to configure the database)
     - mariadb
     restart: on-failure
@@ -54,11 +49,11 @@ services:
     - "9000"
 
 
-volumes:                          # the volumes will be accessible in /home/login/data of the host machine using Docker
+volumes:                            # the volumes will be accessible in /home/login/data of the host machine using Docker
   wordpress:
-    driver: local                 # tells to store the volume locally
+    driver: local                   # tells to store the volume locally
     driver_opts:
-      type: 'none'                   # no specific type
+      type: 'none'                  # no specific type
       o: 'bind'
       device: '/home/casomarr/data/wordpress'     # path where it will be stored locally
   mariadb:
@@ -71,4 +66,4 @@ volumes:                          # the volumes will be accessible in /home/logi
 
 networks:
   inception:
-    driver: bridge              # installs automatically the rules that will allow the 3 containers to communicate by bridge
+    driver: bridge                  # installs automatically the rules that will allow the 3 containers to communicate by bridge

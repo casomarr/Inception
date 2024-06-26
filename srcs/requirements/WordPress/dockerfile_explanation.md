@@ -1,9 +1,9 @@
 # WordPress dockerfile
 
-FROM debian:buster
+`FROM debian:bullseye`
 
-RUN apt update && apt upgrade -y
-RUN apt install nginx -y
+`RUN apt update && apt upgrade -y` \
+`RUN apt install nginx -y`
 
 ## Installation
 
@@ -15,9 +15,11 @@ Download PHP (and its dependencies php-fpm and php-mysql)
 
 `RUN apt-get install -y php7.3 && php-fpm && php-mysql && mariadb-client`
 
+"mariadb-client" is a package that includes mysql tools.
+
 Download WordPress by giving wget its link
 
-`RUN wget https://fr.wordpress.org/wordpress-6.0-fr_FR.tar.gz -P /var/www`
+`RUN wget https://fr.wordpress.org/wordpress-6.4-fr_FR.tar.gz -P /var/www`
 
 - we indicate wget to download wordpress in the folder /var/www since
 - we have indicated it was the primary folder to display in the NGINX container
@@ -25,10 +27,12 @@ Download WordPress by giving wget its link
 
 We delete the .tar file that will be no longer used
 
-`RUN cd /var/www && tar -xzf wordpress-6.0-fr_FR.tar.gz && rm wordpress-6.0-fr_FR.tar.gz`
+`RUN cd /var/www && tar -xzf wordpress-6.4-fr_FR.tar.gz && rm wordpress-6.0-fr_FR.tar.gz`
 
 We allow the root user to write in the wordpress folder
 
+`RUN cp -r /var/www/wordpress/. /var/www/html` \
+`RUN rm -rf /var/www/wordpress` \
 `RUN		chown -R root:root /var/www/wordpress`
 
 ## PHP configuration
@@ -38,7 +42,7 @@ Most WordPress files are .php.
 
 Move php configuration file to the container folder
 
-`COPY ./conf/wordpress.conf  /etc/php/7.4/fpm/pool.d/wordpress.conf`
+`COPY ./conf/www.conf  /etc/php/7.4/fpm/pool.d/www.conf`
 
 
 ## WordPress configuration
@@ -57,13 +61,18 @@ We give the rights and move it to the right folder
 
 ### script to use CLI : conf/cli_config.sh
 
-Run CLI script to automatically configure the first two pages of WordPress.
 
-`COPY ./conf/cli_config.sh .`
+Move CLI script to container folder and give rights
 
-`RUN chmod +x cli_config.sh`
+`COPY ./conf/cli_config.sh .` \
+`RUN chmod +x cli_config.sh` \
+`RUN mkdir -p /run/php`
 
-`EXPOSE 9000` --> Set container's port.
+Set container's port
+
+`EXPOSE 9000`
+
+Run CLI script to automatically configure the first two pages of WordPress
 
 `CMD [ "./cli_config.sh"]`
 

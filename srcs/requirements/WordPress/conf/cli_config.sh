@@ -1,17 +1,14 @@
 #!/bin/bash
 
-# HERE : j'ai rajoute la if else en esperant que ca reglerait 
-# l'erreur "wp-config.php file already exists" dans le log de wordpress
-# mais ca n'a rien change
-
 if [ -f /var/www/html/wordpress-config.php ]; then
 	echo "Wordpress database already exists"
 
 else
 
-    sleep 15 #to ensure MariaDB's database has had the time to finish launching
+    sleep 15 # To ensure MariaDB's database has had the time to finish launching
 
     echo "Configurating wordpress"
+
     # To automatically enter the information in the first WordPress welcome page :
     ./wp-cli.phar config create	--allow-root \
                         --dbname=$SQL_DATABASE \
@@ -20,9 +17,7 @@ else
                         --dbhost=mariadb:3306 \
                         --path='/var/www/html'
 
-    echo "Installing wordpress"
     # To automatically configure the second page :
-    # Install WordPress
     ./wp-cli.phar core install --allow-root --url=$WP_URL --title=$WP_TITLE --admin_user=$ADMIN_USER --admin_password=$ADMIN_PASSWORD --admin_email=$ADMIN_EMAIL --path='/var/www/html'
     # Add user
     echo "Creating wordpress user"

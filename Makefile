@@ -222,4 +222,3 @@ logs_w:
 # OR
 # docker run -it nginx
 # docker down nginx_img
-

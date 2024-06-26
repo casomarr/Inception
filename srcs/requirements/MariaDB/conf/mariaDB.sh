@@ -3,8 +3,6 @@
 #script that creates a database and an associated user
 #(see script.md's explanations)
 
-#launch MySQL
-# service mysql start;
 
 if [ -d /var/lib/mysql/$SQL_DATABASE ]; then
     echo "SQL database already exists"
@@ -14,8 +12,6 @@ else
     echo "Launching mariadb"
     
     service mariadb start
-
-    #configuration :
 
     echo "Configurating mariadb"
 
@@ -30,11 +26,10 @@ else
     #refresh
     echo "FLUSH PRIVILEGES;" | mariadb -u root -p$SQL_ROOT_PASSWORD
 
-    #RAJOUTER LE KILL??
+    #IMPORTANT: RAJOUTER LE KILL??
+    #kill $(cat /var/run/mysqld/mysqld.pid)
 
 fi
-# #re-launch
-# mysqladmin -u root -p$SQL_ROOT_PASSWORD shutdown
 
 sleep 5
 
