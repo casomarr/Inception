@@ -15,15 +15,17 @@ NGINX, MariaDB and WordPress each have to be set up and run in a different conta
 
 To run, each docker container needs to download a software package (but in its more lightweight possible version) : a docker image. 
 
-When we use a Docker image without Docker Compose, we manually handle the setup and management of containers : we pull the image from Docker Hub (with the command `docker pull <image_name>`) and run it (with the command `docker run`). Ex: `docker run -d -p 80:80 nginx` manually created the container from the nginx image and connects port 80 of the container to port 80 on the host (in that same command line we could have also added network settings, environment variables and data volumes for example).
+When we use a Docker image without Docker Compose, we manually handle the setup and management of containers : we pull the image from Docker Hub (with the command `docker pull <image_name>`) and run it (with the command `docker run`).
+
+Ex: `docker run -d -p 80:80 nginx` manually created the container from the nginx image and connects port 80 of the container to port 80 on the host (in that same command line we could have also added network settings, environment variables and data volumes for example).
 
 When we need to define multiple services, it is better to manage them collectively in a docker-compose.yml file.
 
 ### Why are they are useful?
 
-Isolation: Each container runs independently, so problems in one container don't affect others.
-Portability: Containers can run consistently across different environments, from your local machine to cloud servers.
-Efficiency: Containers share the host system's kernel, making them more lightweight and faster to start than virtual machines.
+Isolation: Each container runs independently, so problems in one container don't affect others. \
+Portability: Containers can run consistently across different environments, from your local machine to cloud servers. \
+Efficiency: Containers share the host system's kernel, making them more lightweight and faster to start than virtual machines. \
 
 
 ## Setting up the website
