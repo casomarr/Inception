@@ -36,19 +36,27 @@ When a user types our website's url, NGINX is the service in charge of deliverin
 When NGINX receives requests from users, it forwards them to the other servers and returns the answers to the users (like a relay point). \
 It stores copies of web pages and other content so that future requests for the same content load faster.
 
+To open the container terminal :
+`docker exec -it nginx_container /bin/bash`
+
 ### 2. MariaDB:
 
 MariaDB is a database management system that stores website’s data, like user information, posts, and comments.
 
 To login into the database :
 
-`docker exec -it container_name bash` \
-`mariadb -u $DB_USER -p` \
-`<enter password>`
+`docker exec -it mariadb_container mysql -u casomarr -p` \
+`<enter password>` \
+`USE wordpress;` \
+`SHOW TABLES;` \
+`SELECT * FROM wp_users;`
 
 ### 3. WordPress:
 
 WordPress is a content management system that makes it easy to create and manage a website without needing to code everything from scratch.
+
+To open the container terminal :
+`docker exec -it wordpress_container /bin/bash`
 
 ## How do they work together?
 

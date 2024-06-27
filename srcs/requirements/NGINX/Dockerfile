@@ -1,8 +1,8 @@
 FROM debian:bullseye
 
 RUN apt update && apt upgrade -y
-    && apt install nginx -y
-    && apt install openssl -y
+RUN apt install nginx -y
+RUN apt install openssl -y
 
 RUN mkdir -p /etc/nginx/ssl
 RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 -out /etc/nginx/ssl/inception.crt -keyout /etc/nginx/ssl/inception.key -subj "/C=FR/ST=IDF/L=Paris/O=42/OU=42/CN=[casomarr.42.fr](http://casomarr.42.fr/)/UID=casomarr"

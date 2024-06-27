@@ -26,9 +26,8 @@ else
     #refresh
     echo "FLUSH PRIVILEGES;" | mariadb -u root -p$SQL_ROOT_PASSWORD
 
-    #IMPORTANT: RAJOUTER LE KILL??
-    #kill $(cat /var/run/mysqld/mysqld.pid)
-
+    kill $(cat /var/run/mysqld/mysqld.pid)
+    
 fi
 
 sleep 5
