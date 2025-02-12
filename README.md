@@ -1,9 +1,7 @@
-<div style="display: flex; flex-wrap: wrap; gap: 10px;">
 <a href="https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white" height="25em" alt="C"/></a>
 <a href="https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white" height="25em" alt="C"/></a>
 <a href="https://img.shields.io/badge/MariaDB-003545?style=for-the-badge&logo=mariadb&logoColor=white" height="25em" alt="C"/></a>
 <a href="https://img.shields.io/badge/Wordpress-21759B?style=for-the-badge&logo=wordpress&logoColor=white" height="25em" alt="C"/></a>
-</div>
 
 # INCEPTION PROJECT
 
