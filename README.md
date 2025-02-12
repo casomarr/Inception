@@ -1,6 +1,6 @@
 # INCEPTION PROJECT
 
-## Objective :
+## GOAL
 
 Setting up a website using Docker containers, Nginx, MariaDB, and WordPress.
 
